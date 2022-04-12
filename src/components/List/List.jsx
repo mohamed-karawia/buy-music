@@ -10,8 +10,6 @@ const List = ({ items, type }) => {
     const navigate = useNavigate();
     const params = useParams();
 
-    console.log(params)
-
     const onNavigate = (id) => {
         if (type === 'artists') {
             navigate(`/albums/${id}`);

@@ -1,11 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 
 import { addToCart, removeFromCart } from '../../store/actions/actions';
 
 const Song = (props) => {
     const dispatch = useDispatch();
+    const location = useLocation();
     const { title, img, time, price } = props.song;
 
     const isSongInCart = useSelector(state => state.cart.items.find(song => song.id === props.song.id));
@@ -28,13 +30,13 @@ const Song = (props) => {
             </Content>
             <Time>{time}</Time>
             <Price>{price}$</Price>
-            <Buttons>
+            {location.pathname !== '/success' && <Buttons>
                 {
                     isSongInCart ?
                         <Button type='remove' onClick={removeFromCartHandler}>Remove from cart</Button> :
                         <Button type='add' onClick={addToCartHandler}>Add to cart</Button>
                 }
-            </Buttons>
+            </Buttons>}
         </Card>
     )
 }

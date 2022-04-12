@@ -6,17 +6,29 @@ const Form = (props) => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [number, setNumber] = useState('');
+    const [error, setError] = useState();
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {
-            name,
-            email,
-            number
+        if (name === '') {
+            setError('Name is required');
+            return;
+        } else if (email === '' || !email.includes('@')) {
+            setError('Please enter a valid email');
+            return;
+        } else if (number === '') {
+            setError('Number is required');
+            return;
+        } else {
+            const data = {
+                name,
+                email,
+                number
+            }
+            props.handleSubmit(data)
         }
-        props.handleSubmit(data)
     }
-    
+
     const cancel = () => {
         props.cancel()
     }
@@ -35,6 +47,7 @@ const Form = (props) => {
                 <Label>Phone number</Label>
                 <Input type="number" value={number} onChange={(e) => setNumber(e.target.value)} />
             </Control>
+            <Error>{error}</Error>
             <Actions>
                 <Button onClick={cancel}>Cancel</Button>
                 <Button type='submit'>Submit</Button>
@@ -73,6 +86,12 @@ const Input = styled.input`
     border-radius: 4px;
     width: 100%;
     border: 1px solid black;
+`
+
+const Error = styled.div`
+    color: red;
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
 `
 
 const Actions = styled.div`

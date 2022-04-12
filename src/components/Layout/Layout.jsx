@@ -1,18 +1,25 @@
 import React, { useState } from 'react'
-import Navbar from './Navbar'
-import { useDispatch } from 'react-redux'
+import styled from 'styled-components'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 import { clearCart } from '../../store/actions/actions'
-import styled from 'styled-components'
+import Navbar from './Navbar'
 import Cart from '../Cart/Cart'
 import Form from '../Form/Form'
 
 const Layout = (props) => {
     const dispatch = useDispatch()
     const [showForm, setShowForm] = useState(false)
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const cart = useSelector(state => state.cart.items)
+    const price = useSelector(state => state.cart.price)
 
     const handleSubmit = (data) => {
-        console.log(data);
+        navigate('/success', { state: {cart, userData: data, price} });
         dispatch(clearCart());
         setShowForm(false)
     }
@@ -25,7 +32,7 @@ const Layout = (props) => {
             <Navbar />
             <Container>
                 {props.children}
-                <Cart onCheckout={() => setShowForm(true)} />
+                {location.pathname !== '/success' && <Cart onCheckout={() => setShowForm(true)} />}
                 {showForm && <Form handleSubmit={handleSubmit} cancel={cancel} />}
             </Container>
         </>

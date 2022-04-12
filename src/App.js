@@ -5,13 +5,14 @@ import Home from './pages/Aritsts';
 import Layout from './components/Layout/Layout';
 import Albums from './pages/Albums';
 import Song from './pages/Songs';
-
+import Success from './pages/Success';
 
 function App() {
   return (
     <Router>
       <Layout>
         <Routes>
+          <Route exact path="/success" element={<Success />} />
           <Route exact path="/albums/:artistId/:albumId" element={<Song />} />
           <Route exact path="/albums/:artistId" element={<Albums />} />
           <Route exact path="/" element={<Home />} />
