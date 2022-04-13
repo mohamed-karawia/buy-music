@@ -1,5 +1,13 @@
-export const GET_ALBUMS = 'GET_ALBUMS';
-export const GET_SONGS = 'GET_SONGS';
+export const ADD_ARTIST = 'ADD_ARTIST';
+export const REMOVE_ARTIST = 'REMOVE_ARTIST';
+export const CLEAR_SONGS_BY_ARTIST_ID = 'CLEAR_SONGS_BY_ARTIST_ID';
+
+export const ADD_ALBUM = 'ADD_ALBUM';
+export const REMOVE_ALBUM = 'REMOVE_ALBUM';
+export const CLEAR_SPONGS_BY_ALBUM_ID = 'CLEAR_SPONGS_BY_ALBUM_ID';
+
+export const CLEAR_SELECTED_DATA = 'CLEAR_SELECTED_DATA';
+
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const REMOVE_FROM_CART = 'REMOVE_FROM_CART';
 export const CLEAR_CART = 'CLEAR_CART';

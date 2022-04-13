@@ -46,7 +46,6 @@ const Card = styled.div`
     align-items: center;
     &:hover {
         box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        -webkit-filter: ${props => props.darkOnHover ? 'brightness(60%)' : 'brightness(100%)'};
         transition: all .2s ease;
     }
     column-gap: 30px;

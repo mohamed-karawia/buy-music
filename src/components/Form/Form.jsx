@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
-import ReactDOM from 'react-dom';
+import { useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { clearCart, clearSelectedData } from '../../store/actions/actions'
 import styled from 'styled-components';
 
-const Form = (props) => {
+const Form = () => {
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [number, setNumber] = useState('');
     const [error, setError] = useState();
+
+    const cart = useSelector(state => state.cart.items)
+    const price = cart.reduce((acc, item) => acc + item.price, 0);
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -25,15 +34,18 @@ const Form = (props) => {
                 email,
                 number
             }
-            props.handleSubmit(data)
+            navigate('/success', { state: { cart, userData: data, price } });
+            dispatch(clearCart());
+            dispatch(clearSelectedData());
         }
     }
 
+
     const cancel = () => {
-        props.cancel()
+        navigate('/songs')
     }
 
-    return ReactDOM.createPortal(
+    return (
         <Container onSubmit={handleSubmit}>
             <Control>
                 <Label>Name</Label>
@@ -52,19 +64,15 @@ const Form = (props) => {
                 <Button onClick={cancel}>Cancel</Button>
                 <Button type='submit'>Submit</Button>
             </Actions>
-        </Container>,
-        document.getElementById('portal')
+        </Container>
     )
 }
 
 const Container = styled.form`
     padding: 1rem 2rem;
   box-shadow: 0 1px 8px rgba(0, 0, 0, 0.2);
-  position: fixed;
-  width: 35%;
-  top: 10%;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  max-width: 50rem;
   background-color: white;
 `
 

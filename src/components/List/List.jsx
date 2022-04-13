@@ -1,38 +1,29 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useNavigate } from "react-router-dom";
-import { useParams } from 'react-router-dom';
+import { useLocation } from "react-router-dom";
 
-import Item from '../Item/Item';
+import Album from '../Album/Album';
+import Artist from '../Artist/Artist';
 
-const List = ({ items, type }) => {
-    const { artistId } = useParams();
-    const navigate = useNavigate();
-    const params = useParams();
-
-    const onNavigate = (id) => {
-        if (type === 'artists') {
-            navigate(`/albums/${id}`);
-        } else {
-            navigate(`/albums/${artistId}/${id}`);
-        }
-    }
+const List = (props) => {
+    const location = useLocation();
 
     return (
         <Container>
-
             <ItemsList>
-                {items.map(item => (
-                    <Item key={item.id} id={item.id} name={item.name} image={item.img} onNavigate={() => onNavigate(item.id)} />
-                ))}
+
+                {
+                    location.pathname === '/' ?
+                        props.items.map(item => <Artist key={item.id} item={item} />)
+                        :
+                        props.items.map(item => <Album key={item.id} item={item} />)
+                }
             </ItemsList>
         </Container>
     )
 }
 
-const Container = styled.ul`
-    /* padding: 0 3rem; */
-`
+const Container = styled.div``
 
 const ItemsList = styled.ul`
     display: flex;

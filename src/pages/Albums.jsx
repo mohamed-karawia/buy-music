@@ -1,24 +1,41 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import List from '../components/List/List';
 import Header from '../components/ui/Header';
-import { getAlbums } from '../store/actions/actions';
+import NavigateButtons from '../components/NavigateButtons/NavigateButtons';
 
 const Albums = () => {
-  let { artistId } = useParams();
-  const dispatch = useDispatch();
-  const albums = useSelector(state => state.music.albums);
+  const navigate = useNavigate();
+  const artists = useSelector(state => state.music.selectedArtists);
+  const albums = artists.map(artist => artist.albums).flat();
 
-  useEffect(() => {
-    dispatch(getAlbums(artistId));
-  }, [])
+  const onNextButtonClicked = () => {
+    navigate('/songs');
+  }
+
+  const onPrevButtonClicked = () => {
+    navigate('/');
+  }
+
   return (
     <Container>
-      <Header>Albums</Header>
-      <List items={albums} type='albums' />
+      {albums.length > 0 ?
+        <>
+          <Header>Albums</Header>
+          <List items={albums} type='albums' />
+        </>
+        :
+        <Header>No albums Found, Please select some artists first</Header>
+      }
+      <NavigateButtons
+        onNextButtonClicked={onNextButtonClicked}
+        onPreviousButtonClicked={onPrevButtonClicked}
+        nextDisabled={albums.length === 0}
+      />
+
     </Container>
   )
 }

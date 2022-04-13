@@ -1,13 +1,18 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, Navigate } from 'react-router-dom';
 
 import Song from '../components/Song/Song';
 
 const Success = () => {
     const location = useLocation();
-    const { userData, cart, price } = location.state;
     const navigate = useNavigate();
+
+    if (!location.state) {
+        return <Navigate to='/' />;
+    }
+
+    const { userData, cart, price } = location.state;
 
     const navToHome = () => {
         navigate('/');

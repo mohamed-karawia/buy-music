@@ -1,31 +1,44 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { useParams } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
-import { getSongs } from '../store/actions/actions';
 import Header from '../components/ui/Header';
 import Song from '../components/Song/Song';
+import NavigateButtons from '../components/NavigateButtons/NavigateButtons';
 
 const Songs = () => {
-    let { artistId, albumId } = useParams();
-    const dispatch = useDispatch();
-    const songs = useSelector(state => state.music.songs);
+    const navigate = useNavigate();
+    const albums = useSelector(state => state.music.selectedAlbums);
+    const cartItems = useSelector(state => state.cart.items);
 
-    useEffect(() => {
-        dispatch(getSongs(albumId, artistId));
-    }, [])
+    const onNextButtonClicked = () => {
+        navigate('/form');
+    }
+
+    const onPrevButtonClicked = () => {
+        navigate('/albums');
+    }
 
     return (
         <Container>
             <Header>Songs</Header>
-            <List>
+            {albums.length > 0 ? albums.map(album => <List key={album.id}>
+                <ListHeader>{album.name}</ListHeader>
                 {
-                    songs.map(song => (
+                    album.songs.map(song => (
                         <Song key={song.id} song={song} />
                     ))
                 }
-            </List>
+            </List>)
+                :
+                <Header>No songs Found, Please select some albums first</Header>
+            }
+            <NavigateButtons
+                onNextButtonClicked={onNextButtonClicked}
+                onPreviousButtonClicked={onPrevButtonClicked}
+                nextDisabled={albums.length === 0 || cartItems.length === 0}
+            />
         </Container>
     )
 }
@@ -35,6 +48,15 @@ const Container = styled.div``
 const List = styled.ul`
     display: flex;
     flex-direction: column;
+    margin-bottom: 1rem;
+    gap: .5rem;
+`
+
+const ListHeader = styled.h3`
+    background-color: white;
+    font-size: 1.5rem;
+    font-weight: 400;
+    text-transform: capitalize;
 `
 
 export default Songs

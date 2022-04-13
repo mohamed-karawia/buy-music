@@ -1,23 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import CartSvg from '../ui/CartSvg';
 
-const Cart = (props) => {
-    const count = useSelector(state => state.cart.count);
-    const price = useSelector(state => state.cart.price);
+const Cart = () => {
+    const navigate = useNavigate();
+    const cartItems = useSelector(state => state.cart.items);
+    const cartItemsCount = cartItems.length;
+    const totalPrice = cartItems.reduce((acc, item) => acc + item.price, 0);
 
     const onCheckout = () => {
-        props.onCheckout();
+        navigate('/form');
     }
 
     return (
         <Container>
             <CartSvg />
-            <Info>Count {count}</Info>
-            <Info>Total Price: {price}$</Info>
-            <Button onClick={onCheckout}>Checkout</Button>
+            <Info>Count {cartItemsCount}</Info>
+            <Info>Total Price: {totalPrice}$</Info>
+            <Button onClick={onCheckout} disabled={cartItems.length === 0}>Checkout</Button>
         </Container>
     )
 }
@@ -43,6 +46,11 @@ const Button = styled.button`
     cursor: pointer;
     &:hover {
         background: #27ae60;
+    }
+
+    &:disabled {
+        background: #3a3a3a;
+        cursor: default;
     }
 `
 

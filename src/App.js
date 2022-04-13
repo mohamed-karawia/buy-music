@@ -1,11 +1,12 @@
 import './App.css';
-import { BrowserRouter as Router, Routes, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 import Home from './pages/Aritsts';
 import Layout from './components/Layout/Layout';
 import Albums from './pages/Albums';
-import Song from './pages/Songs';
+import Songs from './pages/Songs';
 import Success from './pages/Success';
+import FinalForm from './pages/FinalForm';
 
 function App() {
   return (
@@ -13,12 +14,12 @@ function App() {
       <Layout>
         <Routes>
           <Route exact path="/success" element={<Success />} />
-          <Route exact path="/albums/:artistId/:albumId" element={<Song />} />
-          <Route exact path="/albums/:artistId" element={<Albums />} />
+          <Route exact path="/form" element={<FinalForm />} />
+          <Route exact path="/songs" element={<Songs />} />
+          <Route exact path="/albums" element={<Albums />} />
           <Route exact path="/" element={<Home />} />
         </Routes>
       </Layout>
-      <div id="portal"></div>
     </Router>
   );
 }

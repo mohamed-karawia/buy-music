@@ -1,24 +1,42 @@
 import * as actionTypes from '../actions/actionTypes';
-import data from './DUMMY_DATA'
+import data from '../DUMMY_DATA'
 
 const inititalState = {
     artists: data,
-    albums: [],
-    songs: []
+    selectedArtists: [],
+    selectedAlbums: [],
+    selectedSongs: []
 };
 
 const reducer = (state = inititalState, action) => {
     switch (action.type) {
-        case actionTypes.GET_ALBUMS:
+        case actionTypes.ADD_ARTIST:
             return {
                 ...state,
-                albums: state.artists.find(artist => artist.id === +action.artistId).albums
+                selectedArtists: [...state.selectedArtists, action.artist]
             };
-        case actionTypes.GET_SONGS:
-            let albums = state.artists.find(artist => artist.id === +action.artistId).albums;
+        case actionTypes.REMOVE_ARTIST:
             return {
                 ...state,
-                songs: albums.find(album => album.id === +action.albumId).songs
+                selectedArtists: state.selectedArtists.filter(artist => artist.id !== action.artist.id),
+                selectedAlbums: state.selectedAlbums.filter(album => album.artistId !== action.artist.id),
+            };
+        case actionTypes.ADD_ALBUM:
+            return {
+                ...state,
+                selectedAlbums: [...state.selectedAlbums, action.album]
+            };
+        case actionTypes.REMOVE_ALBUM:
+            return {
+                ...state,
+                selectedAlbums: state.selectedAlbums.filter(album => album.id !== action.album.id)
+            };
+        case actionTypes.CLEAR_SELECTED_DATA:
+            return {
+                ...state,
+                selectedArtists: [],
+                selectedAlbums: [],
+                selectedSongs: []
             };
         default:
             return state;
